@@ -1,0 +1,33 @@
+version: '2'
+services:
+  mysql:
+    build: ./mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'false'
+      MYSQL_DATABASE: 'Test'
+    volumes:
+      - ./mysql/database:/var/lib/mysql
+      - ./mysql/initial:/docker-entrypoint-initdb.d
+    ports:
+      - '3306:3306'
+  mail:
+    build: ./mail
+    ports:
+      - '1025:25'
+      - '1080:80'
+  apache-php:
+    build: ./apache-php5
+    environment:
+      APACHE_RUN_USER: www-data
+      APACHE_RUN_GROUP: www-data
+      APACHE_LOG_DIR: /var/log/apache2
+      APACHE_LOCK_DIR: /var/lock/apache2
+      APACHE_PID_FILE: /var/run/apache2.pid
+    ports:
+      - '80:80'
+    volumes:
+      - ./apache-php5/site:/var/www/site
+    links:
+      - mysql
+      - mail

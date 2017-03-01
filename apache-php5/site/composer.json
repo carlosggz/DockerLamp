@@ -1,0 +1,7 @@
+{
+    "name": "Docker LAMP Site",
+    "require": {
+        "phpmailer/phpmailer": "~5.2",
+        "vlucas/spot2": "^2.2"
+    }
+}
